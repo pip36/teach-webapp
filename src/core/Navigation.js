@@ -13,21 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Home, FolderShared } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
-  appBar: {
-    width: `calc(100% - ${theme.drawerWidth}px)`,
-    marginLeft: theme.drawerWidth
-  },
-  drawer: {
-    width: theme.drawerWidth,
-    flexShrink: 0
-  },
-  drawerPaper: {
-    width: theme.drawerWidth
-  }
-}));
-
-function Navigation() {
+const Navigation = () => {
   const classes = useStyles();
 
   return (
@@ -64,6 +50,20 @@ function Navigation() {
       </Drawer>
     </>
   );
-}
+};
+
+const useStyles = makeStyles(theme => ({
+  appBar: {
+    width: `calc(100% - ${theme.drawerWidth}px)`,
+    marginLeft: theme.drawerWidth
+  },
+  drawer: {
+    width: theme.drawerWidth,
+    flexShrink: 0
+  },
+  drawerPaper: {
+    width: theme.drawerWidth
+  }
+}));
 
 export default Navigation;

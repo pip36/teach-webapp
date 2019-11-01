@@ -1,16 +1,29 @@
 import React from "react";
-import {
-  createMuiTheme,
-  ThemeProvider,
-  makeStyles
-} from "@material-ui/core/styles";
-import { CssBaseline, Button } from "@material-ui/core";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Navigation from "./core/Navigation";
+import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 
-const theme = createMuiTheme({
-  drawerWidth: 180
-});
+const App = () => {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <Navigation />
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <Switch>
+          <Route path="/registers">Registers</Route>
+          <Route path="/">
+            <Button variant="contained" color="primary">
+              Hello World
+            </Button>
+          </Route>
+        </Switch>
+      </main>
+    </div>
+  );
+};
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,33 +36,5 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3)
   }
 }));
-
-function App() {
-  const classes = useStyles();
-
-  return (
-    <>
-      <CssBaseline />
-      <Router>
-        <ThemeProvider theme={theme}>
-          <div className={classes.root}>
-            <Navigation />
-            <main className={classes.content}>
-              <div className={classes.toolbar} />
-              <Switch>
-                <Route path="/registers">Registers</Route>
-                <Route path="/">
-                  <Button variant="contained" color="primary">
-                    Hello World
-                  </Button>
-                </Route>
-              </Switch>
-            </main>
-          </div>
-        </ThemeProvider>
-      </Router>
-    </>
-  );
-}
 
 export default App;
