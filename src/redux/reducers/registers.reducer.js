@@ -1,15 +1,11 @@
-import { ADD_REGISTER } from "../actions";
+import { GET_REGISTERS_SUCCESS } from "../actions";
 
 const initialState = {};
 
 const registers = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_REGISTER:
-      const id = Math.random() * 10000;
-      return {
-        ...state,
-        [id]: { id, ...action.payload }
-      };
+    case GET_REGISTERS_SUCCESS:
+      return action.payload.reduce((acc, x) => ({ ...acc, [x.id]: x }), {});
     default:
       return state;
   }

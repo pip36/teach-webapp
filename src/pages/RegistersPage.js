@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { addRegister } from "redux/actions";
+import { getRegisters, addRegister } from "redux/actions";
 import { selectRegisters } from "redux/reducers";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -34,10 +34,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const RegistersPage = ({ addRegister, registers }) => {
+const RegistersPage = ({ getRegisters, addRegister, registers }) => {
   const classes = useStyles();
 
   const [isAddInProgress, setIsAddInProgress] = useState(false);
+
+  useEffect(() => void getRegisters(), [getRegisters]);
 
   return (
     <>
@@ -121,6 +123,7 @@ const RegistersPage = ({ addRegister, registers }) => {
 const mapStateToProps = selectRegisters;
 
 const mapDispatchToProps = {
+  getRegisters,
   addRegister
 };
 
