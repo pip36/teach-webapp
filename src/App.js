@@ -1,9 +1,7 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
-import Navigation from "./core/Navigation";
+import Navigation from "core/Navigation";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
-import RegistersPage from "./pages/RegistersPage";
+import Routes from "routes/Routes";
 
 const App = () => {
   const classes = useStyles();
@@ -13,16 +11,7 @@ const App = () => {
       <Navigation />
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Switch>
-          <Route path="/registers">
-            <RegistersPage />
-          </Route>
-          <Route path="/">
-            <Button variant="contained" color="primary">
-              Hello World
-            </Button>
-          </Route>
-        </Switch>
+        <Routes />
       </main>
     </div>
   );
