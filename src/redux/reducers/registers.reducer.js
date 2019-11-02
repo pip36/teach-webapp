@@ -7,11 +7,15 @@ const registers = (state = initialState, action) => {
     case ADD_REGISTER:
       return {
         ...state,
-        [action.payload.id]: action.payload
+        [Math.random() * 10000]: action.payload
       };
     default:
       return state;
   }
 };
+
+export const selectRegisters = state => ({
+  registers: Object.keys(state.registers).map(key => state.registers[key])
+});
 
 export default registers;

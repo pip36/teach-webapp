@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { addRegister } from "redux/actions";
+import { selectRegisters } from "redux/reducers";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   List,
@@ -22,7 +25,7 @@ import {
 } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
-  root: {
+  listItem: {
     backgroundColor: theme.palette.background.paper
   },
   success: {
@@ -30,23 +33,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const RegistersPage = () => {
+const RegistersPage = ({ addRegister, registers }) => {
   const classes = useStyles();
 
-  const registers = [
-    {
-      name: "Number1",
-      subtext: "It's here..."
-    },
-    {
-      name: "The second",
-      subtext: "Ok then."
-    },
-    {
-      name: "Another",
-      subtext: "Yes."
-    }
-  ];
+  const [isAddInProgress, setIsAddInProgress] = useState(false);
 
   return (
     <>
@@ -55,39 +45,53 @@ const RegistersPage = () => {
         color="secondary"
         className={classes.button}
         startIcon={<AddIcon />}
+        onClick={() => setIsAddInProgress(true)}
       >
         Add New Register
       </Button>
 
-      <List className={classes.root}>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              <DescriptionIcon />
-            </Avatar>
-          </ListItemAvatar>
-
-          <TextField
-            className={classes.margin}
-            margin="normal"
-            variant="outlined"
-            placeholder="Enter a name..."
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton aria-label="confirm name">
-                    {<CheckIcon className={classes.success} />}
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-          />
-        </ListItem>
+      <List>
+        {isAddInProgress && (
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <DescriptionIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                const { name } = e.target;
+                addRegister({ name: name.value });
+                setIsAddInProgress(false);
+              }}
+            >
+              <TextField
+                className={classes.margin}
+                id="name"
+                label="name"
+                margin="normal"
+                variant="outlined"
+                placeholder="Enter a name..."
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton aria-label="confirm name" type="submit">
+                        {<CheckIcon className={classes.success} />}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+                autoFocus
+              />
+            </form>
+          </ListItem>
+        )}
 
         {registers.map((register, i) => (
           <>
             {i > 0 && <Divider component="li" />}
-            <ListItem key={register.name}>
+            <ListItem className={classes.listItem} key={register.name}>
               <ListItemAvatar>
                 <Avatar>
                   <DescriptionIcon />
@@ -98,7 +102,7 @@ const RegistersPage = () => {
                 secondary={register.subtext}
               />
               <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="delete">
+                <IconButton edge="end" aria-label="edit">
                   <SettingsIcon />
                 </IconButton>
               </ListItemSecondaryAction>
@@ -110,4 +114,13 @@ const RegistersPage = () => {
   );
 };
 
-export default RegistersPage;
+const mapStateToProps = selectRegisters;
+
+const mapDispatchToProps = {
+  addRegister
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RegistersPage);
