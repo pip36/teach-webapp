@@ -1,20 +1,21 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import HomePage from "pages/HomePage";
+import NotFoundPage from "pages/NotFoundPage";
 import RegistersRoutes from "routes/RegistersRoutes";
 
 const Routes = () => {
   return (
     <Switch>
       <Route exact path="/">
-        <Button variant="contained" color="primary">
-          Hello World
-        </Button>
+        <HomePage />
       </Route>
       <Route path="/registers">
         <RegistersRoutes />
       </Route>
-      <Route path="*">{"404"}</Route>
+      <Route path="*">
+        <NotFoundPage />
+      </Route>
     </Switch>
   );
 };
