@@ -1,7 +1,6 @@
 import React from "react";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
-import RegisterPage from "pages/RegisterPage";
-import RegistersPage from "pages/RegistersPage";
+import { Register, Registers } from "pages";
 
 const RegistersRoutes = () => {
   let { path } = useRouteMatch();
@@ -9,10 +8,10 @@ const RegistersRoutes = () => {
   return (
     <Switch>
       <Route exact path={path}>
-        <RegistersPage />
+        <Registers />
       </Route>
       <Route path={`${path}/:registerId`}>
-        <RegisterPage />
+        <Register />
       </Route>
     </Switch>
   );

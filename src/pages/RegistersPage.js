@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { addRegister } from "redux/actions";
 import { selectRegisters } from "redux/reducers";
-import { Switch, Route, Link, useRouteMatch } from "react-router-dom";
-import RegisterPage from "pages/RegisterPage";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   List,
@@ -36,94 +35,86 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const RegistersPage = ({ addRegister, registers }) => {
-  let { path } = useRouteMatch();
   const classes = useStyles();
 
   const [isAddInProgress, setIsAddInProgress] = useState(false);
 
   return (
-    <Switch>
-      <Route exact path={path}>
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.button}
-          startIcon={<AddIcon />}
-          onClick={() => setIsAddInProgress(true)}
-        >
-          Add New Register
-        </Button>
+    <>
+      <Button
+        variant="contained"
+        color="secondary"
+        className={classes.button}
+        startIcon={<AddIcon />}
+        onClick={() => setIsAddInProgress(true)}
+      >
+        Add New Register
+      </Button>
 
-        <List>
-          {isAddInProgress && (
-            <ListItem>
+      <List>
+        {isAddInProgress && (
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <DescriptionIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                const { name } = e.target;
+                addRegister({ name: name.value });
+                setIsAddInProgress(false);
+              }}
+            >
+              <TextField
+                className={classes.margin}
+                id="name"
+                label="name"
+                margin="normal"
+                variant="outlined"
+                placeholder="Enter a name..."
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton aria-label="confirm name" type="submit">
+                        {<CheckIcon className={classes.success} />}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+                autoFocus
+              />
+            </form>
+          </ListItem>
+        )}
+
+        {registers.map((register, i) => (
+          <React.Fragment key={register.id}>
+            {i > 0 && <Divider component="li" />}
+            <ListItem className={classes.listItem}>
               <ListItemAvatar>
                 <Avatar>
                   <DescriptionIcon />
                 </Avatar>
               </ListItemAvatar>
-              <form
-                onSubmit={e => {
-                  e.preventDefault();
-                  const { name } = e.target;
-                  addRegister({ name: name.value });
-                  setIsAddInProgress(false);
-                }}
-              >
-                <TextField
-                  className={classes.margin}
-                  id="name"
-                  label="name"
-                  margin="normal"
-                  variant="outlined"
-                  placeholder="Enter a name..."
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton aria-label="confirm name" type="submit">
-                          {<CheckIcon className={classes.success} />}
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
-                  autoFocus
-                />
-              </form>
+              <ListItemText
+                primary={
+                  <Link to={`/registers/${register.id}`}>{register.name}</Link>
+                }
+                secondary={register.subtext}
+              />
+
+              <ListItemSecondaryAction>
+                <IconButton edge="end" aria-label="edit">
+                  <SettingsIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
             </ListItem>
-          )}
-
-          {registers.map((register, i) => (
-            <React.Fragment key={register.id}>
-              {i > 0 && <Divider component="li" />}
-              <ListItem className={classes.listItem}>
-                <ListItemAvatar>
-                  <Avatar>
-                    <DescriptionIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <Link to={`/registers/${register.id}`}>
-                      {register.name}
-                    </Link>
-                  }
-                  secondary={register.subtext}
-                />
-
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="edit">
-                    <SettingsIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </React.Fragment>
-          ))}
-        </List>
-      </Route>
-      <Route path={`${path}/:registerId`}>
-        <RegisterPage />
-      </Route>
-    </Switch>
+          </React.Fragment>
+        ))}
+      </List>
+    </>
   );
 };
 
