@@ -4,7 +4,9 @@ import {
   GET_REGISTERS,
   ADD_REGISTER,
   getRegistersSuccess,
-  addRegisterSuccess
+  addRegisterSuccess,
+  REMOVE_REGISTER,
+  removeRegisterSuccess
 } from "redux/actions";
 
 export const getRegistersEpic = (action$, _, { localStorage }) =>
@@ -24,5 +26,18 @@ export const addRegisterEpic = (action$, _, { localStorage }) =>
       registers.push({ id, ...payload });
       localStorage.setItem("registers", JSON.stringify(registers));
       return addRegisterSuccess({ id, ...payload });
+    })
+  );
+
+export const removeRegister = (action$, _, { localStorage }) =>
+  action$.pipe(
+    ofType(REMOVE_REGISTER),
+    map(({ payload }) => {
+      const registers = JSON.parse(localStorage.getItem("registers") || "[]");
+      const newRegisters = registers.filter(x => x.id !== payload);
+
+      localStorage.setItem("registers", JSON.stringify(newRegisters));
+
+      return removeRegisterSuccess(payload);
     })
   );

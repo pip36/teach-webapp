@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { getRegisters, addRegister } from "redux/actions";
+import { getRegisters, addRegister, removeRegister } from "redux/actions";
 import { selectRegisters } from "redux/reducers";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -22,7 +22,8 @@ import {
   Description as DescriptionIcon,
   Settings as SettingsIcon,
   CheckCircleOutline as CheckIcon,
-  Add as AddIcon
+  Add as AddIcon,
+  DeleteForever as DeleteIcon
 } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
@@ -34,7 +35,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const RegistersPage = ({ getRegisters, addRegister, registers }) => {
+const RegistersPage = ({
+  getRegisters,
+  addRegister,
+  removeRegister,
+  registers
+}) => {
   const classes = useStyles();
 
   const [isAddInProgress, setIsAddInProgress] = useState(false);
@@ -46,7 +52,6 @@ const RegistersPage = ({ getRegisters, addRegister, registers }) => {
       <Button
         variant="contained"
         color="secondary"
-        className={classes.button}
         startIcon={<AddIcon />}
         onClick={() => setIsAddInProgress(true)}
       >
@@ -111,6 +116,13 @@ const RegistersPage = ({ getRegisters, addRegister, registers }) => {
                 <IconButton edge="end" aria-label="edit">
                   <SettingsIcon />
                 </IconButton>
+                <IconButton
+                  onClick={() => removeRegister(register.id)}
+                  edge="end"
+                  aria-label="delete"
+                >
+                  <DeleteIcon />
+                </IconButton>
               </ListItemSecondaryAction>
             </ListItem>
           </React.Fragment>
@@ -126,7 +138,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   getRegisters,
-  addRegister
+  addRegister,
+  removeRegister
 };
 
 export default connect(

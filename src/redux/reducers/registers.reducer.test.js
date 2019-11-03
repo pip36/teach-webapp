@@ -1,5 +1,9 @@
 import reducer, { selectRegisters } from "./registers.reducer";
-import { getRegistersSuccess, addRegisterSuccess } from "redux/actions";
+import {
+  getRegistersSuccess,
+  addRegisterSuccess,
+  removeRegisterSuccess
+} from "redux/actions";
 
 describe("Registers Reducer", () => {
   it("Has the correct initial state", () => {
@@ -51,6 +55,27 @@ describe("Registers Reducer", () => {
         2: { id: 2, name: "TWO" }
       },
       allIds: [1, 2]
+    };
+
+    expect(reducer(initialState, action)).toEqual(expectedState);
+  });
+
+  it("REMOVE_REGISTER_SUCCESS removes a single register by id", () => {
+    const initialState = {
+      byId: {
+        1: { id: 1, name: "ONE" },
+        2: { id: 2, name: "TWO" }
+      },
+      allIds: [1, 2]
+    };
+
+    const action = removeRegisterSuccess(1);
+
+    const expectedState = {
+      byId: {
+        2: { id: 2, name: "TWO" }
+      },
+      allIds: [2]
     };
 
     expect(reducer(initialState, action)).toEqual(expectedState);

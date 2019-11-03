@@ -1,4 +1,10 @@
-import { GET_REGISTERS_SUCCESS, ADD_REGISTER_SUCCESS } from "redux/actions";
+import {
+  GET_REGISTERS_SUCCESS,
+  ADD_REGISTER_SUCCESS,
+  REMOVE_REGISTER_SUCCESS
+} from "redux/actions";
+
+import { omit } from "lodash";
 
 const initialState = {
   byId: {},
@@ -19,6 +25,11 @@ const registers = (state = initialState, { type, payload }) => {
           ...payload.entities.registers
         },
         allIds: [...state.allIds, payload.result]
+      };
+    case REMOVE_REGISTER_SUCCESS:
+      return {
+        byId: omit(state.byId, [payload]),
+        allIds: state.allIds.filter(x => x !== payload)
       };
     default:
       return state;
