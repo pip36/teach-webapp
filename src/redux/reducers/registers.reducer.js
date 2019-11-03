@@ -1,4 +1,4 @@
-import { GET_REGISTERS_SUCCESS, ADD_REGISTER_SUCCESS } from "../actions";
+import { GET_REGISTERS_SUCCESS, ADD_REGISTER_SUCCESS } from "redux/actions";
 
 const initialState = {};
 
