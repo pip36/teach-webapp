@@ -120,7 +120,9 @@ const RegistersPage = ({ getRegisters, addRegister, registers }) => {
   );
 };
 
-const mapStateToProps = selectRegisters;
+const mapStateToProps = state => ({
+  registers: selectRegisters(state)
+});
 
 const mapDispatchToProps = {
   getRegisters,

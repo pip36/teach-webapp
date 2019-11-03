@@ -1,5 +1,5 @@
 import { ofType } from "redux-observable";
-import { map, mapTo } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import {
   GET_REGISTERS,
   ADD_REGISTER,
@@ -10,7 +10,7 @@ import {
 export const getRegistersEpic = (action$, _, { localStorage }) =>
   action$.pipe(
     ofType(GET_REGISTERS),
-    mapTo(
+    map(() =>
       getRegistersSuccess(JSON.parse(localStorage.getItem("registers") || "[]"))
     )
   );

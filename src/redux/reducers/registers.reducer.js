@@ -5,20 +5,20 @@ const initialState = {
   allIds: []
 };
 
-const registers = (state = initialState, action) => {
-  switch (action.type) {
+const registers = (state = initialState, { type, payload }) => {
+  switch (type) {
     case GET_REGISTERS_SUCCESS:
       return {
-        byId: action.payload.reduce((acc, x) => ({ ...acc, [x.id]: x }), {}),
-        allIds: action.payload.map(x => x.id)
+        byId: payload.entities.registers,
+        allIds: payload.result
       };
     case ADD_REGISTER_SUCCESS:
       return {
         byId: {
           ...state.byId,
-          [action.payload.id]: action.payload
+          ...payload.entities.registers
         },
-        allIds: [...state.allIds, action.payload.id]
+        allIds: [...state.allIds, payload.result]
       };
     default:
       return state;

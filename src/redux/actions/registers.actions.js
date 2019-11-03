@@ -1,3 +1,6 @@
+import { normalize } from "normalizr";
+import { registerSchema, registerListSchema } from "redux/schemas";
+
 export const GET_REGISTERS = "GET_REGISTERS";
 export const GET_REGISTERS_SUCCESS = "GET_REGISTERS_SUCCESS";
 
@@ -8,9 +11,9 @@ export const getRegisters = () => ({
   type: GET_REGISTERS
 });
 
-export const getRegistersSuccess = payload => ({
+export const getRegistersSuccess = registers => ({
   type: GET_REGISTERS_SUCCESS,
-  payload
+  payload: normalize(registers, registerListSchema)
 });
 
 export const addRegister = payload => ({
@@ -18,7 +21,7 @@ export const addRegister = payload => ({
   payload
 });
 
-export const addRegisterSuccess = payload => ({
+export const addRegisterSuccess = register => ({
   type: ADD_REGISTER_SUCCESS,
-  payload
+  payload: normalize(register, registerSchema)
 });
