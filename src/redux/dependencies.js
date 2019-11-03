@@ -1,9 +1,10 @@
 import { ajax } from "rxjs/ajax";
-import registersRepository from "redux/repositories/registersRepository";
+
+const localStorage = window.localStorage;
 
 export default {
   dependencies: {
     ajax,
-    registers: registersRepository()
+    localStorage
   }
 };
