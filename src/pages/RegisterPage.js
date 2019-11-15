@@ -12,16 +12,14 @@ import { PRESENT, LATE, ABSENT } from "registers/registerStatuses";
 import RegisterStatusIcon from "registers/RegisterStatusIcon";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    width: "100%"
-  },
   paper: {
     marginTop: theme.spacing(3),
     width: "100%",
-    overflowX: "auto",
     marginBottom: theme.spacing(2)
   },
-  table: {}
+  tableWrapper: {
+    overflow: "auto"
+  }
 }));
 
 const updateRows = (rows, coords, status) => {
@@ -80,18 +78,14 @@ const RegisterPage = () => {
   const rowsLength = Object.keys(rows).length;
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Table
-          className={classes.table}
-          size="small"
-          aria-label="a dense table"
-        >
+    <Paper className={classes.paper}>
+      <div className={classes.tableWrapper}>
+        <Table className={classes.table} size="small" stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell />
               {[...Array(headingsLength)].map((_, i) => (
-                <TableCell>{headings[i].text}</TableCell>
+                <TableCell align="center">{headings[i].text}</TableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -103,6 +97,7 @@ const RegisterPage = () => {
                 </TableCell>
                 {[...Array(headingsLength)].map((_, j) => (
                   <TableCell
+                    align="center"
                     aria-describedby={rows[i].name}
                     onClick={e => handleCellClick(e, { x: i, y: j })}
                   >
@@ -113,7 +108,7 @@ const RegisterPage = () => {
             ))}
           </TableBody>
         </Table>
-      </Paper>
+      </div>
       <Popover
         id="status-popover"
         open={Boolean(anchorEl)}
@@ -140,7 +135,7 @@ const RegisterPage = () => {
           <RegisterStatusIcon status={LATE} onClick={handleStatusClick(LATE)} />
         </Paper>
       </Popover>
-    </div>
+    </Paper>
   );
 };
 
